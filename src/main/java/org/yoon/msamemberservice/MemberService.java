@@ -37,4 +37,11 @@ public class MemberService {
 
         return jwtUtil.createToken(member.getId(), member.getEmail(), Duration.ofDays(7));
     }
+
+    public MemberDetailRes getMemberDetail(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("not exists"));
+
+        return Member.to(member);
+    }
 }

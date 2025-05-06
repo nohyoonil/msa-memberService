@@ -21,7 +21,6 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
     private SecretKey key;
-    private final static String TOKEN_PREFIX = "Bearer ";
 
     @PostConstruct
     public void init() {
