@@ -26,10 +26,20 @@ public class Member {
     @Column(nullable = false)
     private String nickname;
     private String password;
+    private long points;
+    private long voteSum;
+    private long votedSum;
     private LocalDateTime createdAt;
 
     public static MemberDetailRes to(Member member) {
-        return new MemberDetailRes(member.getId(), member.email,
-                member.nickname, LocalDateTime.now());
+        return MemberDetailRes.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .points(member.getPoints())
+                .voteSum(member.getVoteSum())
+                .votedSum(member.getVotedSum())
+                .createdAt(member.getCreatedAt())
+                .build();
     }
 }

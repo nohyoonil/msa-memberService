@@ -9,6 +9,7 @@ import org.yoon.msamemberservice.model.request.SignUpForm;
 import org.yoon.msamemberservice.model.response.MemberDetailRes;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class MemberService {
                 .email(form.getEmail())
                 .nickname(form.getNickname())
                 .password(encoder.encode(form.getPassword()))
+                .createdAt(LocalDateTime.now())
                 .build());
 
         return Member.to(member);
