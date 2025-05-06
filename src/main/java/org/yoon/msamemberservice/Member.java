@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.yoon.msamemberservice.model.response.MemberDetailRes;
 
 import java.time.LocalDateTime;
 
@@ -26,4 +27,9 @@ public class Member {
     private String nickname;
     private String password;
     private LocalDateTime createdAt;
+
+    public static MemberDetailRes to(Member member) {
+        return new MemberDetailRes(member.getId(), member.email,
+                member.nickname, member.password, LocalDateTime.now());
+    }
 }
