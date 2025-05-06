@@ -33,6 +33,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setIssuer(issuer)
+                .claim("id", id)
                 .claim("email", email)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + expiration.toMillis())) // 1시간
