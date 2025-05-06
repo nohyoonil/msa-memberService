@@ -3,9 +3,12 @@ package org.yoon.msamemberservice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.yoon.msamemberservice.jwt.JwtUtil;
 import org.yoon.msamemberservice.model.request.SignInForm;
 import org.yoon.msamemberservice.model.request.SignUpForm;
 import org.yoon.msamemberservice.model.response.MemberDetailRes;
+
+import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +16,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
 
     public MemberDetailRes signUp(SignUpForm form) {
         Member member = memberRepository.save(Member.builder()
@@ -31,6 +35,6 @@ public class MemberService {
         if (!encoder.matches(form.getPassword(), member.getPassword()))
             throw new RuntimeException("not match");
 
-        return "todo jwt";
+        return jwtUtil.createToken(member.getId(), member.getEmail(), Duration.ofDays(7));
     }
 }
