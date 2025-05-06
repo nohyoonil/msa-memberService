@@ -12,6 +12,5 @@ public class MemberDetailRes {
     private long id;
     private String email;
     private String nickname;
-    private String password;
     private LocalDateTime createdAt;
 }

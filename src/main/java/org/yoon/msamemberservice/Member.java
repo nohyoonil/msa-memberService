@@ -30,6 +30,6 @@ public class Member {
 
     public static MemberDetailRes to(Member member) {
         return new MemberDetailRes(member.getId(), member.email,
-                member.nickname, member.password, LocalDateTime.now());
+                member.nickname, LocalDateTime.now());
     }
 }
