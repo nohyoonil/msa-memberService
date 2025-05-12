@@ -10,7 +10,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   profiles:
-    include: secret
+    include: secret, test
 
 server:
   port: 8081

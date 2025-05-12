@@ -42,4 +42,16 @@ public class Member {
                 .createdAt(member.getCreatedAt())
                 .build();
     }
+
+    public long plusPoints(long reward) {
+        return this.points += reward;
+    }
+
+    public long plusVoteSum() {
+        return this.voteSum += 1;
+    }
+
+    public long plusVotedSum() {
+        return this.votedSum += 1;
+    }
 }
