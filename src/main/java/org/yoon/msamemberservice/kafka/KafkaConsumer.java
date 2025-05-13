@@ -17,10 +17,11 @@ import java.util.HashMap;
 public class KafkaConsumer {
 
     private final ObjectMapper objectMapper;
+    private final KafkaProducer kafkaProducer;
     private final MemberRepository memberRepository;
 
     @Transactional
-    @KafkaListener(topics = "validate.question", groupId = "member-service")
+    @KafkaListener(topics = "validate.member", groupId = "member-service")
     public void listen(String message) {
         try {
             HashMap<String, Object> map = objectMapper.readValue(message, new TypeReference<>() {});
@@ -36,6 +37,8 @@ public class KafkaConsumer {
             voter.plusPoints(reward);
             voter.plusVoteSum();
             target.plusVotedSum();
+
+            kafkaProducer.send("create.notification", objectMapper.writeValueAsString(map));
 
         } catch (JsonProcessingException | RuntimeException e) {
             e.printStackTrace(); // logger 사용 추천
