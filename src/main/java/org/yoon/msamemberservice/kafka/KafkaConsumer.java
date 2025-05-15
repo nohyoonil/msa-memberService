@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yoon.msamemberservice.Member;
 import org.yoon.msamemberservice.MemberRepository;
+import org.yoon.msamemberservice.model.dto.VoteDetailDto;
 
 import java.util.HashMap;
 
@@ -24,10 +25,10 @@ public class KafkaConsumer {
     @KafkaListener(topics = "validate.member", groupId = "member-service")
     public void listen(String message) {
         try {
-            HashMap<String, Object> map = objectMapper.readValue(message, new TypeReference<>() {});
-            Long voterId = Long.parseLong(map.get("voterId").toString());
-            Long targetId = Long.parseLong(map.get("targetId").toString());
-            Long reward = Long.parseLong(map.get("reward").toString());
+            VoteDetailDto voteDetailDto = objectMapper.readValue(message, VoteDetailDto.class);
+            Long voterId = voteDetailDto.getVoterId();
+            Long targetId = voteDetailDto.getTargetId();
+            int reward = voteDetailDto.getRewards();
 
             Member voter = memberRepository.findById(voterId)
                     .orElseThrow(() -> new RuntimeException("voter not found: " + voterId));
@@ -38,7 +39,7 @@ public class KafkaConsumer {
             voter.plusVoteSum();
             target.plusVotedSum();
 
-            kafkaProducer.send("create.notification", objectMapper.writeValueAsString(map));
+            kafkaProducer.send("create.notification", objectMapper.writeValueAsString(voteDetailDto));
 
         } catch (JsonProcessingException | RuntimeException e) {
             e.printStackTrace(); // logger 사용 추천

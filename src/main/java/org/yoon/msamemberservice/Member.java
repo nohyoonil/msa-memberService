@@ -26,7 +26,7 @@ public class Member {
     @Column(nullable = false)
     private String nickname;
     private String password;
-    private long points;
+    private int points;
     private long voteSum;
     private long votedSum;
     private LocalDateTime createdAt;
@@ -43,7 +43,7 @@ public class Member {
                 .build();
     }
 
-    public long plusPoints(long reward) {
+    public int plusPoints(int reward) {
         return this.points += reward;
     }
 
