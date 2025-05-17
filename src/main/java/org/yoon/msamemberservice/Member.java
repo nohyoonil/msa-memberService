@@ -43,8 +43,8 @@ public class Member {
                 .build();
     }
 
-    public int plusPoints(int reward) {
-        return this.points += reward;
+    public void plusPoints(int reward) {
+        this.points += reward;
     }
 
     public long plusVoteSum() {

@@ -8,6 +8,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.yoon.msamemberservice.Member;
 import org.yoon.msamemberservice.MemberRepository;
+import org.yoon.msamemberservice.model.dto.PlusPointDto;
 import org.yoon.msamemberservice.model.dto.UsePointDto;
 
 import java.time.Duration;
@@ -50,6 +51,21 @@ public class KafkaConsumer {
             redisTemplate.opsForValue()
                     .set("memberId:" + memberId + "voteId:" + dto.getVoteId() + "open",
                             "exist", Duration.ofSeconds(3));
+        } catch (JsonProcessingException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaListener(topics = "member.plusPoints", groupId = "member-service")
+    public void plusPoints(String message) {
+        try {
+            PlusPointDto dto = objectMapper.readValue(message, PlusPointDto.class);
+            long memberId = dto.getMemberId();
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new RuntimeException("target not found: " + memberId));
+
+            member.plusPoints(dto.getReward());
+            memberRepository.save(member);
         } catch (JsonProcessingException | RuntimeException e) {
             e.printStackTrace();
         }
