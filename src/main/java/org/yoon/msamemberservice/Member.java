@@ -54,4 +54,8 @@ public class Member {
     public long plusVotedSum() {
         return this.votedSum += 1;
     }
+
+    public void usePoints(int points) {
+        this.points -= points;
+    }
 }
