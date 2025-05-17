@@ -70,4 +70,31 @@ public class KafkaConsumer {
             e.printStackTrace();
         }
     }
+    @KafkaListener(topics = "member.plusVoteSum", groupId = "member-service")
+    public void plusVoteSum(String message) {
+        try {
+            Long memberId = objectMapper.readValue(message, Long.class);
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new RuntimeException("target not found: " + memberId));
+
+            member.plusVoteSum();
+            memberRepository.save(member);
+        } catch (JsonProcessingException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaListener(topics = "member.plusVotedSum", groupId = "member-service")
+    public void plusVotedSum(String message) {
+        try {
+            Long memberId = objectMapper.readValue(message, Long.class);
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new RuntimeException("target not found: " + memberId));
+
+            member.plusVotedSum();
+            memberRepository.save(member);
+        } catch (JsonProcessingException | RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
 }
