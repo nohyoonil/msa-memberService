@@ -24,7 +24,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signIn(form));
     }
 
-    @GetMapping("/api/member/{memberId}")
+    @GetMapping("/api/members/{memberId}")
     public ResponseEntity<MemberDetailRes> getMemberDetail(@PathVariable Long memberId) {
         return ResponseEntity.ok(memberService.getMemberDetail(memberId));
     }
